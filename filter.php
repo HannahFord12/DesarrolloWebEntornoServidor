@@ -15,13 +15,13 @@ $contactos = array(
     array("codigo" => 5, "nombre" => "Nora Jover",
     "telefono" => "638765432", "email" => "norajover@hotmail.com"),);
     
-    $filtrarPor= "Mario Montero";
+    $filtrarPor= strtolower($_GET["filtrarPor"] ?? "gmail");
 
     $filtrados = array_filter($contactos, 
 
         function($contacto) use ($filtrarPor){
                 
-            return strpos(strtolower($contacto["nombre"]), strtolower($filtrarPor)) !== FALSE;
+            return strpos(strtolower($contacto["email"]), strtolower($filtrarPor)) !== FALSE;
 
         });
     
