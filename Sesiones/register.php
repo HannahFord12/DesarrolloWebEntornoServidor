@@ -1,5 +1,26 @@
 <?php
+function registro($nombre, $email, $password) 
+{
+    global $pdo;
+    $pdoSt = $pdo->prepare('INSERT INTO users (username,email,clave) VALUES (?, ?, ?)');
+    $pdoSt -> bindParam(1,$nombre);
+    $pdoSt -> bindParam(2,$email);
+    $pdoSt -> bindParam(3,$password);
+    $pdoSt -> execute();
+}
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    $opciones = array(
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_PERSISTENT => true
+    );
+   
+    $pdo = new PDO(
+        'mysql:host=localhost;dbname=Sesiones;charset=utf8',
+        'root',
+        'sa',
+    $opciones);
+    
     // El nombre y contraseña son campos obligatorios
     if(empty($_POST["nombre"])){
         $errores[] = "El nombre es requerido";
@@ -21,26 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         registro($nombre,$email,$password);
     }
 
-    $opciones = array(
-        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_PERSISTENT => true
-    );
-   
-    $pdo = new PDO(
-        'mysql:host=localhost;dbname=Sesiones;charset=utf8',
-        'root',
-        'sa',
-    $opciones);
-    function registro($nombre, $email, $password) 
-    {
-        global $pdo;
-        $pdoSt = $pdo->prepare('INSERT INTO users (username,email,clave) VALUES (?, ?, ?)');
-        $pdoSt -> bindParam(1,$nombre);
-        $pdoSt -> bindParam(2,$email);
-        $pdoSt -> bindParam(3,$password);
-        $pdoSt -> execute();
-    }
+
+
 }
 ?>
 <!DOCTYPE html>
