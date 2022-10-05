@@ -1,4 +1,14 @@
 <?php
+session_start();
+if (isset($_SERVER['username'])){
+    echo "Ya estas logeado no hace falta registrarse!!";
+}
+function existe($nombre, $email) 
+{
+    global $pdo;
+    $sql = "SELECT * FROM users WHERE username = '$nombre' AND email = '$email'";
+    return $pdo->query($sql)->fetch();
+}
 function registro($nombre, $email, $password) 
 {
     global $pdo;
@@ -39,11 +49,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $nombre = $_POST['nombre'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        registro($nombre,$email,$password);
+        $existe = existe($nombre,$email);
+        if(!$existe){
+            registro($nombre,$email,$password);
+            $_SESSION['username'] = $nombre;
+            $_SESSION['succes'] = "Ahora estas logeado";
+            unset($_SESSION['msg']);
+            header('location: login.php');
+        }else {
+            echo "El usuario ya existe, prueba con otro";
+        }
+        
     }
-
-
-
 }
 ?>
 <!DOCTYPE html>
