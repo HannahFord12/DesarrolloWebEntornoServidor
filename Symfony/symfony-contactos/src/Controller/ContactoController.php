@@ -20,27 +20,7 @@ class ContactoController extends AbstractController
         9 => ["nombre" => "Nora Jover", "telefono" => "54565859", "email" => "norajover@ieselcaminas.org"]
     ];
 
-    #[Route("/contacto/insertar", name:"insertar_contacto")]
-
-    public function insertar(ManagerRegistry $doctrine){
-        $entityManager = $doctrine->getManager();
-        foreach ($this->contactos as $c) {
-            $contacto = new Contacto();
-            $contacto ->setNombre($c["nombre"]);
-            $contacto ->setNombre($c["telefono"]);
-            $contacto ->setNombre($c["email"]);
-            $entityManager ->persist($contacto);
-        }
-        try{
-            //solo se necesitara hacer flush una vez y confirmara todas las operaciones pendientes
-            $entityManager->flush();
-            return new Response("Contactos insertados ");
-        }catch (\Exception $e){
-            return new Response("Error al insertar objetos");
-        }
-    }
-
-    #[Route("/contacto/{codigo}", name:"ficha_contacto")]
+    /* #[Route("/contacto/{codigo}", name:"ficha_contacto")] */
 
     public function lista($codigo):Response{
         //si no existeel elemento con dicha clave devolvemos null 
@@ -62,5 +42,25 @@ class ContactoController extends AbstractController
                 'contactos' =>$resultados
             ]);
         
+    }
+
+    #[Route("/contacto/insertar", name:"insertar_contacto")]
+
+    public function insertar(ManagerRegistry $doctrine){
+        $entityManager = $doctrine->getManager();
+        foreach ($this->contactos as $c) {
+            $contacto = new Contacto();
+            $contacto ->setNombre($c["nombre"]);
+            $contacto ->setTelefono($c["telefono"]);
+            $contacto ->setEmail($c["email"]);
+            $entityManager ->persist($contacto);
+        }
+        try{
+            //solo se necesitara hacer flush una vez y confirmara todas las operaciones pendientes
+            $entityManager->flush();
+            return new Response("Contactos insertados ");
+        }catch (\Exception $e){
+            return new Response("Error al insertar objetos" . $e->getMessage());
+        }
     }
 }
