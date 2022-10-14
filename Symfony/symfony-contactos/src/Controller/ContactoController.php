@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Contacto;
+use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +19,26 @@ class ContactoController extends AbstractController
         7 => ["nombre" => "Laura Martínez", "telefono" => "42898966", "email" => "lm2000@ieselcaminas.org"],
         9 => ["nombre" => "Nora Jover", "telefono" => "54565859", "email" => "norajover@ieselcaminas.org"]
     ];
+
+    #[Route("/contacto/insertar", name:"insertar_contacto")]
+
+    public function insertar(ManagerRegistry $doctrine){
+        $entityManager = $doctrine->getManager();
+        foreach ($this->contactos as $c) {
+            $contacto = new Contacto();
+            $contacto ->setNombre($c["nombre"]);
+            $contacto ->setNombre($c["telefono"]);
+            $contacto ->setNombre($c["email"]);
+            $entityManager ->persist($contacto);
+        }
+        try{
+            //solo se necesitara hacer flush una vez y confirmara todas las operaciones pendientes
+            $entityManager->flush();
+            return new Response("Contactos insertados ");
+        }catch (\Exception $e){
+            return new Response("Error al insertar objetos");
+        }
+    }
 
     #[Route("/contacto/{codigo}", name:"ficha_contacto")]
 
