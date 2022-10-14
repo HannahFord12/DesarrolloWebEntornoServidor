@@ -19,31 +19,6 @@ class ContactoController extends AbstractController
         7 => ["nombre" => "Laura Martínez", "telefono" => "42898966", "email" => "lm2000@ieselcaminas.org"],
         9 => ["nombre" => "Nora Jover", "telefono" => "54565859", "email" => "norajover@ieselcaminas.org"]
     ];
-
-    /* #[Route("/contacto/{codigo}", name:"ficha_contacto")] */
-
-    public function lista($codigo):Response{
-        //si no existeel elemento con dicha clave devolvemos null 
-        $resultado = ($this->contactos[$codigo]?? null);
-        
-        return $this-> render('ficha_contacto.html.twig',[
-            'contacto' => $resultado
-            ]);
-        
-    }
-
-    #[Route("/contacto/buscar/{texto}", name:"buscar_contacto")]
-
-    public function buscar($texto):Response{
-        $resultados = array_filter($this -> contactos, function($contacto) use($texto){
-            return strpos($contacto["nombre"], $texto) !== FALSE;
-        });
-            return $this->render('lista_contactos.html.twig',[
-                'contactos' =>$resultados
-            ]);
-        
-    }
-
     #[Route("/contacto/insertar", name:"insertar_contacto")]
 
     public function insertar(ManagerRegistry $doctrine){
@@ -63,4 +38,49 @@ class ContactoController extends AbstractController
             return new Response("Error al insertar objetos" . $e->getMessage());
         }
     }
+
+    #[Route("/contacto/{codigo}", name:"ficha_contacto")]
+
+    public function ficha(ManagerRegistry $doctrine, $codigo):Response{
+        $repositorio = $doctrine->getRepository(Contacto::class);
+        $contacto = $repositorio->find($codigo);
+
+        return $this->render('ficha_contacto.html.twig', [
+            'contacto'=>$contacto
+        ]);
+    }
+    
+
+    public function listaOld($codigo):Response{
+        //si no existeel elemento con dicha clave devolvemos null 
+        $resultado = ($this->contactos[$codigo]?? null);
+        
+        return $this-> render('ficha_contacto.html.twig',[
+            'contacto' => $resultado
+            ]);
+        
+    }
+
+    #[Route("/contacto/buscar/{texto}", name:"buscar_contacto")]
+
+    public function buscar(ManagerRegistry $doctrine, $texto):Response{
+        //filtramos aquellos que contengan el texto en el nombre
+        $repositorio=$doctrine->getRepository(Contacto::class);
+        $contactos = $repositorio->findByName($texto);
+        return $this->render('lista_contactos.html.twig', [
+            'contactos' =>$contactos
+        ]);
+    }
+
+    public function buscarOld($texto):Response{
+        $resultados = array_filter($this -> contactos, function($contacto) use($texto){
+            return strpos($contacto["nombre"], $texto) !== FALSE;
+        });
+            return $this->render('lista_contactos.html.twig',[
+                'contactos' =>$resultados
+            ]);
+        
+    }
+
+    
 }
