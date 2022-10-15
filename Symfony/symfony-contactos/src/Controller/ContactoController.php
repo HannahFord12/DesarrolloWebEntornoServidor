@@ -82,5 +82,48 @@ class ContactoController extends AbstractController
         
     }
 
+    #[Route("/contacto/update/{id}/{nombre}", name:"modificar_contacto")]
+
+    public function update(ManagerRegistry $doctrine, $id, $nombre):Response{
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Contacto::class);
+        $contacto = $repositorio->find($id);
+        if ($contacto){
+            $contacto->setNombre($nombre);
+            try{
+                $entityManager->flush();
+                return $this-> render('ficha_contacto.html.twig',[
+                    'contacto' => $contacto
+                ]);
+            }catch(\Exception $e){
+                return new Response("Error insertando objetos");
+            }
+        }else{
+            return $this->render('ficha_contacto.html.twig',[
+                'contacto' => null
+            ]);
+        }
+    }
+    #[Route("/contacto/delete/{id}", name:"eliminar_contacto")]
+
+    public function delete(ManagerRegistry $doctrine, $id):Response{
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Contacto::class);
+        $contacto = $repositorio->find($id);
+        if ($contacto){
+            try{
+                $entityManager->remove($contacto);
+                $entityManager->flush();
+                return new Response("Contacto eliminado correctamente");
+            }catch(\Exception $e){
+                return new Response("Error al eliminar objeto");
+            }
+        }else{
+            return $this->render('ficha_contacto.html.twig',[
+                'contacto' => null
+            ]);
+        }
+    }
+
     
 }
