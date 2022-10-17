@@ -7,19 +7,47 @@ use App\Entity\Provincia;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactoController extends AbstractController
 {
-   
-    private $contactos = [
-        1 => ["nombre" => "Juan Pérez", "telefono" => "524142432", "email" => "juanp@ieselcaminas.org"],
-        2 => ["nombre" => "Ana López", "telefono" => "58958448", "email" => "anita@ieselcaminas.org"],
-        5 => ["nombre" => "Mario Montero", "telefono" => "5326824", "email" => "mario.mont@ieselcaminas.org"],
-        7 => ["nombre" => "Laura Martínez", "telefono" => "42898966", "email" => "lm2000@ieselcaminas.org"],
-        9 => ["nombre" => "Nora Jover", "telefono" => "54565859", "email" => "norajover@ieselcaminas.org"]
-    ];
+    #[Route("/contacto/nuevo", name:"nuevo_contacto")]
+
+    public function nuevo(ManagerRegistry $doctrine, Request $request){
+        $contacto = new Contacto();
+
+        $formulario = $this->createFormBuilder($contacto)
+            ->add('nombre', TextType::class)
+            ->add('telefono', TextType::class)
+            ->add('email', EmailType::class, array('label' => 'Correo electrónico'))
+            ->add('provincia', EntityType::class, array(
+                'class' => Provincia::class,
+                'choice_label' => 'nombre',))
+            ->add('save', SubmitType::class, array('label' => 'Enviar'))
+            ->getForm();
+            $formulario->handleRequest($request);
+
+            if($formulario->isSubmitted() && $formulario-> isValid()){
+                $contacto = $formulario-> getData();
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($contacto);
+                $entityManager ->flush();
+                return $this->redirectToRoute('ficha_contacto',[
+                    "codigo" => $contacto->getId()
+                ]);
+            }
+
+            return $this->render('nuevo.html.twig',array(
+                'formulario'=>  $formulario->createView()
+            ));
+    }
+
     #[Route("/contacto/insertar", name:"insertar_contacto")]
 
     public function insertar(ManagerRegistry $doctrine){
@@ -171,5 +199,7 @@ class ContactoController extends AbstractController
             'contacto' => $contacto
         ]);
     }
+    
+    
     
 }
