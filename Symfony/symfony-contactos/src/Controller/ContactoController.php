@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Contacto;
 use App\Entity\Provincia;
+use App\Form\ContactoType;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,30 +23,23 @@ class ContactoController extends AbstractController
     public function nuevo(ManagerRegistry $doctrine, Request $request){
         $contacto = new Contacto();
 
-        $formulario = $this->createFormBuilder($contacto)
-            ->add('nombre', TextType::class)
-            ->add('telefono', TextType::class)
-            ->add('email', EmailType::class, array('label' => 'Correo electrónico'))
-            ->add('provincia', EntityType::class, array(
-                'class' => Provincia::class,
-                'choice_label' => 'nombre',))
-            ->add('save', SubmitType::class, array('label' => 'Enviar'))
-            ->getForm();
-            $formulario->handleRequest($request);
+        $formulario = $this->createForm(ContactoType::class,$contacto);
+            
+        $formulario->handleRequest($request);
 
-            if($formulario->isSubmitted() && $formulario-> isValid()){
-                $contacto = $formulario-> getData();
-                $entityManager = $doctrine->getManager();
-                $entityManager->persist($contacto);
-                $entityManager ->flush();
-                return $this->redirectToRoute('ficha_contacto',[
-                    "codigo" => $contacto->getId()
-                ]);
-            }
+        if($formulario->isSubmitted() && $formulario-> isValid()){
+            $contacto = $formulario-> getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($contacto);
+            $entityManager ->flush();
+            return $this->redirectToRoute('ficha_contacto',[
+                "codigo" => $contacto->getId()
+            ]);
+        }
 
-            return $this->render('nuevo.html.twig',array(
-                'formulario'=>  $formulario->createView()
-            ));
+        return $this->render('nuevo.html.twig',array(
+            'formulario'=>  $formulario->createView()
+        ));
     }
 
     #[Route("/contacto/editar/{codigo}", name:"editar_contacto", requirements: ["codigo"=>"\d+"])]
@@ -54,27 +48,31 @@ class ContactoController extends AbstractController
         $repositorio = $doctrine->getRepository(Contacto::class);
         $contacto = $repositorio->find($codigo);
 
-        $formulario = $this->createFormBuilder($contacto)
-            ->add('nombre', TextType::class)
-            ->add('telefono', TextType::class)
-            ->add('email', EmailType::class, array('label' => 'Correo electrónico'))
-            ->add('provincia', EntityType::class, array(
-                'class' => Provincia::class,
-                'choice_label' => 'nombre',))
-            ->add('save', SubmitType::class, array('label' => 'Enviar'))
-            ->getForm();
-            $formulario->handleRequest($request);
+        if ($contacto){
 
-            if($formulario->isSubmitted() && $formulario-> isValid()){
-                $contacto = $formulario-> getData();
+            $formulario = $this->createForm(ContactoType::class, $contacto);
+            $formulario->handleRequest($request);
+    
+            if ($formulario->isSubmitted() && $formulario->isValid()) {
+    
+                $contacto = $formulario->getData();    
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($contacto);
-                $entityManager ->flush();   
+                $entityManager->flush();
+    
+                return $this->redirectToRoute('ficha_contacto', ["codigo" => $contacto->getId()]);
             }
-
-            return $this->render('nuevo.html.twig',array(
-                'formulario'=>  $formulario->createView()
+    
+            return $this->render('nuevo.html.twig', array(
+                'formulario' => $formulario->createView()
             ));
+    
+        }else{
+    
+            return $this->render('ficha_contacto.html.twig', [
+                'contacto' => NULL
+            ]);
+        }
     }
 
     #[Route("/contacto/insertar", name:"insertar_contacto")]
