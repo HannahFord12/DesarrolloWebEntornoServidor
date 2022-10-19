@@ -9,10 +9,10 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactoController extends AbstractController
@@ -41,6 +41,35 @@ class ContactoController extends AbstractController
                 return $this->redirectToRoute('ficha_contacto',[
                     "codigo" => $contacto->getId()
                 ]);
+            }
+
+            return $this->render('nuevo.html.twig',array(
+                'formulario'=>  $formulario->createView()
+            ));
+    }
+
+    #[Route("/contacto/editar/{codigo}", name:"editar_contacto", requirements: ["codigo"=>"\d+"])]
+
+    public function editar(ManagerRegistry $doctrine, Request $request, $codigo){
+        $repositorio = $doctrine->getRepository(Contacto::class);
+        $contacto = $repositorio->find($codigo);
+
+        $formulario = $this->createFormBuilder($contacto)
+            ->add('nombre', TextType::class)
+            ->add('telefono', TextType::class)
+            ->add('email', EmailType::class, array('label' => 'Correo electrónico'))
+            ->add('provincia', EntityType::class, array(
+                'class' => Provincia::class,
+                'choice_label' => 'nombre',))
+            ->add('save', SubmitType::class, array('label' => 'Enviar'))
+            ->getForm();
+            $formulario->handleRequest($request);
+
+            if($formulario->isSubmitted() && $formulario-> isValid()){
+                $contacto = $formulario-> getData();
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($contacto);
+                $entityManager ->flush();   
             }
 
             return $this->render('nuevo.html.twig',array(
