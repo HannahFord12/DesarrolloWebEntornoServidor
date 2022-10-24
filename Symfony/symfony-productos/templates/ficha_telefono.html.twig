@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title%}Telefonos en stock{%endblock%}
+{% block body %}
+    <h1>Telefono</h1>
+    {% if telefono %}
+        {{include('partials/datos_telefono.html.twig',{'telefono': telefono})}}
+    {% else %}
+        <p>Telefono no encontrado</p>
+    {%endif %}
+{% endblock %}
