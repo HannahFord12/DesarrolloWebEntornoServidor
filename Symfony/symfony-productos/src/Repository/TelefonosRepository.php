@@ -39,6 +39,16 @@ class TelefonosRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByMarca($marca): array
+    {
+        $qb = $this->createQueryBuilder('c')
+        ->andWhere('c.Marca LIKE :marca')
+        ->setParameter('marca', '%'. $marca . '%')
+        ->getQuery();
+
+        return $qb->execute();
+    }
+
 //    /**
 //     * @return Telefonos[] Returns an array of Telefonos objects
 //     */

@@ -20,7 +20,7 @@ class Telefonos
     #[ORM\Column(length: 255)]
     private ?string $Modelo = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
     private ?string $Precio = null;
 
     #[ORM\Column(length: 255)]

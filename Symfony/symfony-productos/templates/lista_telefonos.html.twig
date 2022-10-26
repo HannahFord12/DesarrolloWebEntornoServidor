@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title%}Telefonos{%endblock%}
+{% block body %}
+    <h1>Ficha telefonos</h1>
+    {% if telefonos %}
+        {% for telefono in telefonos %}
+        {{include('partials/datos_telefono.html.twig',{'telefono' : telefono})}}
+        {% endfor %}
+    {% else %}
+        <p>Telefono no encontrado</p>
+    {% endif %}
+{% endblock %}
