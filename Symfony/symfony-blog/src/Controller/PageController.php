@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contact;
+use App\Entity\Post;
 use App\Form\ContactFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use Proxies\__CG__\App\Entity\Category;
@@ -29,12 +30,6 @@ class PageController extends AbstractController
         return $this->render('page/aboutUs.html.twig', []);
     }
 
-    #[Route('/blog', name: 'blog')]
-    public function blog(): Response
-    {
-        return $this->render('page/blog.html.twig', []);
-    }
-
     #[Route('/contact', name: 'contact')]
     public function contact(ManagerRegistry $doctrine, Request $request): Response
     {
@@ -53,9 +48,5 @@ class PageController extends AbstractController
         ));
     }
 
-    #[Route('/singlePost', name: 'singlePost')]
-    public function singlePost(): Response
-    {
-        return $this->render('page/singlePost.html.twig', []);
-    }
+
 }
