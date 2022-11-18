@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentFormType;
@@ -11,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 class BlogController extends AbstractController
 {
@@ -22,6 +26,28 @@ class BlogController extends AbstractController
         $form = $this->createForm(PostFormType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('image')->getData();
+            if ($file) {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+        
+                // Move the file to the directory where images are stored
+                try {
+        
+                    $file->move(
+                        $this->getParameter('images_directory'), $newFilename
+                    );
+        
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+        
+                // updates the 'file$filename' property to store the PDF file name
+                // instead of its contents
+                $post->setImage($newFilename);
+            }
             $post = $form->getData();   
             $post->setSlug($slugger->slug($post->getTitle()));
             $post->setPostUser($this->getUser());
