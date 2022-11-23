@@ -26,12 +26,6 @@ class PageController extends AbstractController
         return $this->render('page/about.html.twig');
     }
 
-    #[Route('/blog', name: 'blog')]
-    public function blog(): Response
-    {
-        return $this->render('page/blog.html.twig');
-    }
-
     #[Route('/postDetails', name: 'postDetails')]
     public function postDetails(): Response
     {
