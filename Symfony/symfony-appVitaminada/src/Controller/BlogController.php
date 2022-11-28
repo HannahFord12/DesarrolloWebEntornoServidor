@@ -67,4 +67,13 @@ class BlogController extends AbstractController
             'form' => $form->createView()    
         ));
     }
+
+    #[Route('/single_post/{slug}', name: 'single_post')]
+    public function post (ManagerRegistry $doctrine, $slug):Response{
+        $repositorio = $doctrine->getRepository(Post::class);
+        $post = $repositorio->findOneBy(["slug"=>$slug]);
+        return $this->render('blog/single_post.html.twig', [
+            'post' => $post
+        ]);
+    }
 }

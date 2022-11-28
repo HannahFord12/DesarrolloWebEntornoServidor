@@ -35,6 +35,9 @@ class Post
     #[ORM\Column]
     private ?int $numComments = null;
 
+    #[ORM\ManyToOne]
+    private ?Category $category = null;
+
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
@@ -125,6 +128,18 @@ class Post
     public function setNumComments(int $numComments): self
     {
         $this->numComments = $numComments;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

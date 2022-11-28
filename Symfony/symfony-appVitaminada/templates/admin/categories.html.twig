@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+<div class="heading-page header-text">
+    <section class="page-heading">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-content">
+                        <h4>Categories</h4>
+                        <h2>Añadir nuevas categorias </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<section class="about-us">
+    <div class="container">
+    <div class="col col-sm-push-2">
+        <h1>Introducir Categoria </h1>
+            {{ form(form, {'attr': {'class':'form-horizontal'}}) }}
+        <hr class="divider">
+    </div>   
+    </div>
+</section>
+<!-- Principal Content Start -->
+{% endblock %}
