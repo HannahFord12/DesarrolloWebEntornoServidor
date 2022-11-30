@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Post;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,6 +31,10 @@ class PostFormType extends AbstractType
                     ])
                 ]
             ])
+            ->add('category', EntityType::class,array(
+                'class' => Category::class,
+                'choice_label' => 'name'
+            ))
             ->add('send', SubmitType::class, array('label' => 'Send', 'attr' => ['class'=>'btn btn-lg']))
         ;
     }
