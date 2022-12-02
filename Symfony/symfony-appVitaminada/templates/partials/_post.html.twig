@@ -1,0 +1,28 @@
+<div class="col-lg-6">
+    <div class="blog-post">
+        <div class="blog-thumb">
+            <img src="{{asset('images/blog/' ~ post.image) }}" alt="">
+        </div>
+        <div class="down-content">
+            <span>{{post.category.name}}</span>
+            <a href="{{path('single_post', {'slug':post.slug})}}"> <h4>{{post.title}}</h4></a>
+            <ul class="post-info">
+            <li><a href="#">{{post.postUser.name}}</a></li>
+            <li><a href="#">{{post.publishedAt | date('d') }} {{ post.publishedAt | date('F') }}</a></li>
+            <li><a href="#">{{post.numComments}} Comments</a></li>
+            </ul>
+            
+            <div class="post-options"><p>Accede al post para mas información</p>
+            <div class="row">
+                <div class="col-lg-12">
+                <ul class="post-tags">
+                    <li><i class="fa fa-tags"></i></li>
+                    <li><a href="#">Best Templates</a>,</li>
+                    <li><a href="#">TemplateMo</a></li>
+                </ul>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

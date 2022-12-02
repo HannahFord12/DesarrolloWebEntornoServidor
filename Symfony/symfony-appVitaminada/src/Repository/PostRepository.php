@@ -21,6 +21,15 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    public function findAll()
+{
+    return $this->createQueryBuilder('p')
+        ->orderBy('p.publishedAt', 'DESC')
+        ->getQuery()
+        ->getResult()
+    ;
+}
+
     public function save(Post $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

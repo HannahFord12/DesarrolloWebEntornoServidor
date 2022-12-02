@@ -15,10 +15,15 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class BlogController extends AbstractController
 {
-    #[Route('/blog', name: 'blog')]
-    public function blog(): Response
+    #[Route('/blog/{page}', name: 'blog', requirements: ['page' => '\d+'])]
+    public function blog(ManagerRegistry $doctrine, int $page =1): Response
     {
-        return $this->render('page/blog.html.twig');
+        $repository = $doctrine->getRepository(Post::class);
+        $posts = $repository->findAll();
+
+        return $this->render('page/blog.html.twig', [
+            'posts' => $posts,
+        ]);
     }
 
     #[Route('/blog/new', name: 'new_post')]
@@ -73,7 +78,8 @@ class BlogController extends AbstractController
         $repositorio = $doctrine->getRepository(Post::class);
         $post = $repositorio->findOneBy(["slug"=>$slug]);
         return $this->render('blog/single_post.html.twig', [
-            'post' => $post
+            'post' => $post,
+            'slug' => $slug
         ]);
     }
 }
