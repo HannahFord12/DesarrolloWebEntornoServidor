@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
+use App\Form\CommentFormType;
 use App\Form\PostFormType;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -77,6 +79,9 @@ class BlogController extends AbstractController
     public function post (ManagerRegistry $doctrine, $slug):Response{
         $repositorio = $doctrine->getRepository(Post::class);
         $post = $repositorio->findOneBy(["slug"=>$slug]);
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest()
         return $this->render('blog/single_post.html.twig', [
             'post' => $post,
             'slug' => $slug
