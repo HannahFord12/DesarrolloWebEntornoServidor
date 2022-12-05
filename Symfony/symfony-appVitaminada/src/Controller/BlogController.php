@@ -76,15 +76,26 @@ class BlogController extends AbstractController
     }
 
     #[Route('/single_post/{slug}', name: 'single_post')]
-    public function post (ManagerRegistry $doctrine, $slug):Response{
+    public function post (ManagerRegistry $doctrine,Request $request, $slug):Response{
         $repositorio = $doctrine->getRepository(Post::class);
         $post = $repositorio->findOneBy(["slug"=>$slug]);
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
-        $form->handleRequest()
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $comment = $form->getData();
+            $comment->setPost($post);
+            //aumentamos el numero de comentarios 
+            $post->setNumComments($post->getNumComments() + 1);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            return $this->redirectToRoute('single_post', ["slug" => $post->getSlug()]);
+        }
         return $this->render('blog/single_post.html.twig', [
             'post' => $post,
-            'slug' => $slug
+            'slug' => $slug,
+            'form' => $form->createView()
         ]);
     }
 }
