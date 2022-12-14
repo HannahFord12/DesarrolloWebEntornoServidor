@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\ProductController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -11,11 +12,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/admin', name: 'admin')]
+    #[Route('/admin/team', name: 'admin')]
     public function index(): Response
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
         return $this->redirect($adminUrlGenerator->setController(TeamCrudController::class)->generateUrl());
+    }
+
+    #[Route('/admin/products', name: 'admin')]
+    public function products(): Response
+    {
+        $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+        return $this->redirect($adminUrlGenerator->setController(ProductController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
