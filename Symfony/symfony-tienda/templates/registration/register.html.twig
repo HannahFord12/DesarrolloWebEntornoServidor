@@ -10,6 +10,7 @@
                 <h1 class="display-5 text-uppercase mb-0">Register</h1>
             </div>
             {{ form_start(registrationForm) }}
+                {{ form_row(registrationForm.name,  {'attr': {'class': 'form-control'}}) }}
                 {{ form_row(registrationForm.email,  {'attr': {'class': 'form-control'}}) }}
                 {{ form_row(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}, {
                     label: 'Password',
