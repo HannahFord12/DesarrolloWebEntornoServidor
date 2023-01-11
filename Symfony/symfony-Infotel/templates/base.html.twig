@@ -1,19 +1,75 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="{{asset('./css/estilos.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <title>{% block title %}Infotel {% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="contenedor">
+    <header class="encabezado">
+        <img src="./img/logo.png" id="logo">
+        <div class="textoheader">
+            <h1 id="titulo">Infotel</h1>
+            <p id="texto">Tu tienda de smartphones de confianza.</p>
+        </div>
+        <nav class="barra_de_navegacion" id="barra_de_navegacion">
+            <ul>
+                <li><a id="inicio" href="{{ path('index') }}">Inicio</a></li>
+                <li><a id="productos" href="{{ path('productos') }}">Productos</a></li>
+                <li><a id="contacto" href="{{ path('contacto') }}">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="menu-toogle" id="icono">
+            <i class="fa fa-bars"></i>
+        </div>
+        <div class="wave" style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none"
+            style="height: 100%; width: 100%;">
+            <path d="M0.00,49.98 C150.00,150.00 349.20,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
+                style="stroke: none; fill: #fff;"></path>
+        </svg>
+        </div>
+    </header>
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {% block body %}
+    {% endblock %}
+
+    <footer class="pie-pagina">
+        <div class="grupo-1">
+            <div class="box">
+                <h2>Infotel</h2>
+                <p>Pagina web desarrollada para la asignatura de diseño de desarrollo web entorno cliente</p>
+            </div>
+            <div class="box">
+                <h2>SOBRE NOSOTROS</h2>
+                <p>Somos una empresa situada en Castellón de la plana. </p>
+                <p>Siempre intentamos ofrecer los mejores precios junto con la mayor calidad y satisfación del cliente posible.</p>
+            </div>
+            <div class="box">
+                <h2>SIGUENOS</h2>
+                <div class="red-social">
+                    <a href="#" class="fa fa-facebook"></a>
+                    <a href="#" class="fa fa-instagram"></a>
+                    <a href="#" class="fa fa-twitter"></a>
+                    <a href="#" class="fa fa-youtube"></a>
+                </div>
+            </div>
+        </div>
+        <div class="grupo-2">
+            <small>&copy; 2022 <b>David Balaguer</b> - Todos los Derechos Reservados.</small>
+        </div>
+    </footer>
+</div>
+    
+    <script type="text/javascript" src="{{asset('./javascript/menu.js')}}"></script>
+    <script type="text/javascript" src="{{asset('./javascript/productos.js')}}"></script>
+    <script type="text/javascript" src="{{asset('./javascript/onload.js')}}"></script>
+</body>
 </html>

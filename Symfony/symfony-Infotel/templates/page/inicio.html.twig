@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block body %}
+    <section class="introduccion">
+        <h2>Buscar smartphone por marca</h2>
+        <p>Introduce la marca de smartphone que te interesa: </p>
+        <div id="buscador">
+            <input type="text">
+            <button type="submit">Buscar</button>
+        </div>
+        
+    </section>
+    <section class="productos" id="producto">
+        <h2>Productos mas vendidos:</h2>
+        <div class="contenedor_productos">
+            <div class="producto">
+                <img src="./img/smartphone1.jpg" alt="smartphone 1">
+                <h3>Asus zenfone 7pro</h3>
+                <p>
+                    <strong>-Marca:</strong> Asus<br>
+                    <strong>-Procesador:</strong> Snapdragon 865+<br>
+                    <strong>-Ram:</strong> 8GB<br>
+                    <strong>-Almacenamiento:</strong> 256GB<br>
+                    <strong>-Precio:</strong> 799€<br>
+                </p>
+                <button id="">Mas informacion</button>
+            </div>
+            <div class="producto">
+                <img src="./img/smartphone1.jpg" alt="smartphone 1">
+                <h3>Asus zenfone 7pro</h3>
+                <p>
+                    <strong>-Marca:</strong> Asus<br>
+                    <strong>-Procesador:</strong> Snapdragon 865+<br>
+                    <strong>-Ram:</strong> 8GB<br>
+                    <strong>-Almacenamiento:</strong> 256GB<br>
+                    <strong>-Precio:</strong> 799€<br>
+                </p>
+                <button id="">Mas informacion</button>
+            </div>
+            <div class="producto">
+                <img src="./img/smartphone1.jpg" alt="smartphone 1">
+                <h3>Asus zenfone 7pro</h3>
+                <p>
+                    <strong>-Marca:</strong> Asus<br>
+                    <strong>-Procesador:</strong> Snapdragon 865+<br>
+                    <strong>-Ram:</strong> 8GB<br>
+                    <strong>-Almacenamiento:</strong> 256GB<br>
+                    <strong>-Precio:</strong> 799€<br>
+                </p>
+                <button id="">Mas informacion</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
