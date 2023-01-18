@@ -8,19 +8,23 @@
         <div class="contenedor_productos">
             {% for product in products %}
             <div class="producto">
-                <img src="{{ product.photo }}" alt="smartphone 1">
+                <img src="img/{{ product.photo }}" alt="smartphone 1">
                 <h3>{{ product.name }}</h3>
                 <p>
                     <strong>-Marca:</strong> {{ product.brand }}<br>
-                    <strong>-Procesador:</strong>{{ product.processor }}<br>
+{#                     <strong>-Procesador:</strong>{{ product.processor }}<br>
                     <strong>-Ram:</strong> {{product.ram}}GB<br>
-                    <strong>-Almacenamiento:</strong> {{product.storage}}GB<br>
+                    <strong>-Almacenamiento:</strong> {{product.storage}}GB<br> #}
                     <strong>-Precio:</strong> {{ product.price }}€<br>
                 </p>
-                <button id="">Mas informacion</button>
+                <div class="btn-action d-flex justify-content-center">
+                            <a class="btn btn-primary py-2 px-3 open-info-product" data-id="{{product.id}}"><i class="bi bi-eye"></i></a>
+                            <a class="btn btn-primary py-2 px-3 open-cart-product" data-id="{{product.id}}"><i class="bi bi-cart"></i></a> 
+                        </div>
             </div>
             {% endfor %}
             
         </div>
+        
     </section>
 {% endblock %}
