@@ -20,7 +20,7 @@
 <body>
 <div id="contenedor">
     <header class="encabezado">
-        <img src="./img/logo.png" id="logo">
+        <img src="{{asset('./img/logo.png')}}" id="logo" href="{{ path('index')}}">
         <div class="textoheader">
             <h1 id="titulo">Infotel</h1>
             <p id="texto">Tu tienda de smartphones de confianza.</p>
@@ -30,6 +30,7 @@
                 <li><a id="inicio" href="{{ path('index') }}">Inicio</a></li>
                 <li><a id="productos" href="{{ path('productos') }}">Productos</a></li>
                 <li><a id="contacto" href="{{ path('contacto') }}">Contacto</a></li>
+                <li><a id="carrito" href ="{{ path('app_cart' )}}">Carrito</a></li>
             </ul>
         </nav>
         <div class="menu-toogle" id="icono">
