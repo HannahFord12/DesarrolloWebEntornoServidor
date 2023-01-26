@@ -2,7 +2,7 @@
 {% block body %}
 {# {{ include ('partials/_messageTemplateOther.html.twig') }}
 {{ include ('partials/_messageTemplateMe.html.twig') }}
-{{ include ('partials/_contactTemplate.html.twig') }} #}
+{{ include ('partials/_contacto.html.twig') }} #}
         <!-- Left -->
                     <div class="w-1/3 border flex flex-col">
 
@@ -33,6 +33,9 @@
 
                         <!-- Contacts -->
                         <div id='contacts' class="bg-grey-lighter flex-1 overflow-auto">
+                            
+                            {{include ("partials/_contacto.html.twig")}}
+                            
                        </div>
 
                     </div>
