@@ -6,14 +6,26 @@ function sendMessage (event){
     }
 } 
 
-/*$(document).ready(function(){
-    const url = "./app_page"
-    $("#send-message").on("keypress", function(){
-        if (this.keyCode === 13) {
-            $.get(url)
-        }
+/* $(document).ready(function(){
+    const url = `/messages/from/${toUserId}`
+    $("#user").on("click", function(){
+        $.get(url,function(data){
+            data.foreach(function(message){
+               createDOMMessage(message);
+            })
+        })
     })
-}) */
+})  */
+const message =  document.getElementById("contacts");
+function createDOMMessage(m){
+    var el = document.createElement('span');
+    el.innerHTML = templateContact;
+    el.getElementById("message.text").innerHTML = m.text;
+    el.getElementById("message.time").innerHTML=m.timestamp;
+    contacts.appendChild(el);
+}
+
+/*Cosas funcionales */
 $(document).ready(function(){
     var url=`/contact`;
     $.get(url, function(data){

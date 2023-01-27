@@ -24,7 +24,7 @@ class PageController extends AbstractController
         ]); 
 
     }
-    #[Route('/message/{toUserId}', name: 'send-message')]
+    #[Route('/post/touser/{toUserId}', name: 'send-message')]
     public function message(ManagerRegistry $doctrine, int $toUserId, Request $request): Response
     {
         $message = new Message();
@@ -43,6 +43,29 @@ class PageController extends AbstractController
             'form'=> $form->createView()
     
         ]);
+    }
+    #[Route('/messages/from/{toUserId}', name:'open-chat')]
+    public function chat(ManagerRegistry $doctrine, int $toUserId): JsonResponse
+    {
+        $repository = $doctrine->getRepository(Message::class);
+        $userId=$this->getUser()->getId();
+        $messages = $repository->findOurMessages($toUserId,$userId);
+        $data=[];
+        $repositoryUser = $doctrine->getRepository(User::class);
+        $toUser = $repositoryUser->find($toUserId);
+        foreach($messages as $message){
+            $item=[
+                "id"=> $message ->getId(),
+                "text"=>$message->getText(),
+                "formUser"=>$userId,
+                "timestamp"=>$message->getTimestamp(),
+                "toUser"=> $toUser, 
+                "sended"=>$message->isSended()
+            ];
+            $data[] = $item;
+        }
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
     #[Route('/contact', name: 'contact',  methods: ['GET'])]
