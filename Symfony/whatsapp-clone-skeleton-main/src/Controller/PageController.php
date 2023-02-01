@@ -55,18 +55,21 @@ class PageController extends AbstractController
         $toUser = $repositoryUser->find($toUserId);
         foreach($messages as $message){
             $item=[
-                "id"=> $message ->getId(),
+               /*  "id"=> $message ->getId(), */
                 "text"=>$message->getText(),
-                "formUser"=>$userId,
+                "formUser"=>$message->getFromUser()->getId(),
                 "timestamp"=>$message->getTimestamp(),
-                "toUser"=> $toUser, 
-                "sended"=>$message->isSended()
+                "toUser"=> $message->getToUser()->getId(), 
+                "name"=>$message->getFromUser()->getUserName(),
             ];
             $data[] = $item;
         }
 
         return new JsonResponse($data, Response::HTTP_OK);
+        
     }
+    
+    
 
     #[Route('/contact', name: 'contact',  methods: ['GET'])]
     public function contact(ManagerRegistry $doctrine): JsonResponse
@@ -93,6 +96,5 @@ class PageController extends AbstractController
         
         return new JsonResponse($data, Response::HTTP_OK);
     
-        
     }
 }

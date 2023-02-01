@@ -46,6 +46,7 @@ class MessageRepository extends ServiceEntityRepository
            ->orWhere('m.fromUser = :other AND m.toUser = :me')
            ->setParameter('me', $meUser)
            ->setParameter('other', $otherUser)
+           ->orderBy('m.timestamp', 'ASC')
            ->getQuery()
            ->getResult()
        ;
