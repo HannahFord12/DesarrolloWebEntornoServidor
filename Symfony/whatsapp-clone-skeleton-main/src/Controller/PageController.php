@@ -32,8 +32,10 @@ class PageController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $message = $form->getData();
+            $repository = $doctrine->getRepository(User::class);
+            $toUser= $repository->find($toUserId);
             $message->setFromUser($this->getUser());
-            $message->setFromUser($toUserId);
+            $message->setToUser($toUser);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($message);
             $entityManager->flush();

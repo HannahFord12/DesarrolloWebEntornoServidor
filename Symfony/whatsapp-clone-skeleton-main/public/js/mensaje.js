@@ -1,21 +1,13 @@
 var currentId;
 function sendMessage (event){
+    var form=$("#send-message"); 
     const url = `/post/touser/${currentId}`;
     if (event.keyCode === 13) {
-        $.get(url)
+        $.post(url,form.serialize(), function(event){
+        })
     }
 } 
 
-/* $(document).ready(function(){
-    const url = `/messages/from/${toUserId}`
-    $("#user").on("click", function(){
-        $.get(url,function(data){
-            data.foreach(function(message){
-               createDOMMessage(message);
-            })
-        })
-    })
-})  */
 const message =  document.getElementById("messages");
 const templateMensageMe=document.getElementById("templateMensageMe").innerHTML;
 const templateMensageOther=document.getElementById("templateMensageOther").innerHTML;
@@ -25,17 +17,18 @@ function createDOMMessageMe(m){
     var hora=m.timestamp.date
     el.innerHTML = templateMensageMe;
     el.getElementsByClassName("message.text")[0].innerHTML = m.text;
-    el.getElementsByClassName("message.time")[0].innerHTML=m.timestamp;
+    el.getElementsByClassName("message.time")[0].innerHTML=hora;/* new Intl.DateTimeFormat('en-US').format(hora) */
     
     message.appendChild(el);
 } 
 function createDOMMessageOther(m){
     var el = document.createElement('span');
     el.innerHTML = templateMensageOther;
+    var hora=m.timestamp.date
     el.getElementsByClassName("message.text")[0].innerHTML = m.text;
     el.getElementsByClassName("message.name")[0].innerHTML = m.name;
    
-    el.getElementsByClassName("message.time")[0].innerHTML=m.timestamp;
+    el.getElementsByClassName("message.time")[0].innerHTML=hora;
     message.appendChild(el);
 } 
 
@@ -44,10 +37,19 @@ $(document).ready(function(){
     $.get(url, function(data){
         data.forEach(function(contacto){
             createDOMContact(contacto);
+            $(".contact").off();
             $(".contact").on('click', function(){
+                $("#messages").empty();
                 let toUserId=$(this).attr('data-id');
+                currentId=toUserId;
                 var mss=`/messages/from/${toUserId}`; 
+                /* var contactos = document.getElementsByClassName("contact");
+                [...contactos].forEach(contacto => {
+                    contacto.setAttribute("active",false)
+                });
+                this.setAttribute("active",true)  */
                 $.get(mss, function(data){
+                    console.log(data)
                     data.forEach(function(msg){
                         if(msg.toUser==toUserId){
                             createDOMMessageMe(msg)
@@ -57,6 +59,8 @@ $(document).ready(function(){
                         }
                     })
                 });
+                
+                
             })
         })
     })
