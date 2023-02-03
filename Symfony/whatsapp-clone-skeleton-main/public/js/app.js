@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
     //Open a WebSocket connection.
     websocket = new WebSocket("ws://localhost:9000/");
@@ -6,6 +5,7 @@ $(document).ready(function(){
     //Connected to server
     websocket.onopen = function(ev) {
         console.log('Connected to server ');
+        
     }
     
     //Connection close
@@ -15,6 +15,7 @@ $(document).ready(function(){
     websocket.onmessage = function(evt) { 
         var response 		= JSON.parse(evt.data); //PHP sends Json data
         //hacer lo que corresponda con response
+        console.log(response)
     };
         
     //Error

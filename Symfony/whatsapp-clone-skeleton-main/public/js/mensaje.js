@@ -43,6 +43,14 @@ $(document).ready(function(){
                 let toUserId=$(this).attr('data-id');
                 currentId=toUserId;
                 var mss=`/messages/from/${toUserId}`; 
+                //prepare json data
+                var msg = {
+                    type: 'chatData',
+                    fromUserId: toUserId,
+                    toUserId: -1
+                };
+                //convert and send data to server
+                websocket.send(JSON.stringify(msg));
                 /* var contactos = document.getElementsByClassName("contact");
                 [...contactos].forEach(contacto => {
                     contacto.setAttribute("active",false)
