@@ -62,7 +62,7 @@ class PageController extends AbstractController
                 "formUser"=>$message->getFromUser()->getId(),
                 "timestamp"=>$message->getTimestamp(),
                 "toUser"=> $message->getToUser()->getId(), 
-                "name"=>$message->getFromUser()->getUserName(),
+                "fromUserName"=>$message->getFromUser()->getUserName(),
             ];
             $data[] = $item;
         }

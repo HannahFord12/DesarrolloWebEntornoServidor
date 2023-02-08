@@ -1,9 +1,11 @@
 var currentId;
+let meCurrtentId = "";
 function sendMessage (event){
     var form=$("#send-message"); 
     const url = `/post/touser/${currentId}`;
     if (event.keyCode === 13) {
         $.post(url,form.serialize(), function(event){
+            document.getElementById("send-message").reset();
         })
     }
 } 
@@ -26,13 +28,14 @@ function createDOMMessageOther(m){
     el.innerHTML = templateMensageOther;
     var hora=m.timestamp.date
     el.getElementsByClassName("message.text")[0].innerHTML = m.text;
-    el.getElementsByClassName("message.name")[0].innerHTML = m.name;
-   
+    console.log(m.name )
+    el.getElementsByClassName("message.name")[0].innerHTML = m.fromUserName;
     el.getElementsByClassName("message.time")[0].innerHTML=hora;
     message.appendChild(el);
 } 
 
 $(document).ready(function(){
+    
     var url=`/contact`;
     $.get(url, function(data){
         data.forEach(function(contacto){
@@ -59,7 +62,7 @@ $(document).ready(function(){
                 $.get(mss, function(data){
                     console.log(data)
                     data.forEach(function(msg){
-                        if(msg.toUser==toUserId){
+                        if(msg.toUser!=meCurrtentId){
                             createDOMMessageMe(msg)
                         }else{
                             createDOMMessageOther(msg);
@@ -72,7 +75,7 @@ $(document).ready(function(){
             })
         })
     })
-    
+    meCurrtentId= $('#user').attr('data-user-id');//document.getElementById("user").attr('data-user-id');
 })
 
 /*Cosas funcionales */

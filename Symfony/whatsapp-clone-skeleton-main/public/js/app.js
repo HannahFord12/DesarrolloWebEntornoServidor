@@ -13,9 +13,17 @@ $(document).ready(function(){
         console.log('Disconnected');
     };
     websocket.onmessage = function(evt) { 
-        var response 		= JSON.parse(evt.data); //PHP sends Json data
+        var response= JSON.parse(evt.data); //PHP sends Json data
         //hacer lo que corresponda con response
-        console.log(response)
+        console.log(response.message, meCurrtentId, response.message.toUserId)
+        
+            if(response.message.fromUserId==meCurrtentId){
+                createDOMMessageMe(response.message);
+            }else{
+                createDOMMessageOther(response.message);
+                
+            }
+         
     };
         
     //Error
